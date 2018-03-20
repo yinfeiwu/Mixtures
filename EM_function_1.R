@@ -73,7 +73,7 @@ while( thresh_check > threshold){
     pi_out_median<-rbind(pi_out_median, pi_median)
     iter=iter+1
     thresh_check<-sum(abs(pi-pi_new))
-    if(round(iter/10)==(iter/10)){write.table(gamma_tmp, paste("gamma_values/pops", pops, "AFR", N_AFR, "_NFE", (N-N_AFR), "_start", paste(pi_start, collapse="_"), "_iter", iter, ".txt",sep=""), row.names=F, col.names=F, quote=F, sep="\t")}
+    if(round(iter/10)==(iter/10)){write.table(gamma_tmp, paste(person, "/gamma_values/pops", pops, "AFR", N_AFR, "_NFE", (N-N_AFR), "_start", paste(pi_start, collapse="_"), "_iter", iter, ".txt",sep=""), row.names=F, col.names=F, quote=F, sep="\t")}
     print(pi)
     print(nrow(x))
 }
