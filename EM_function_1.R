@@ -21,7 +21,7 @@ pop_names<-c("AFR", "NFE") ##c("AFR","AMR", "EAS","FIN","OTH","SAS", "NFE") ##
 k=length(pop_names)
 pops<-ifelse(k==2, "AFR_NFE", "ALL") ##"ALL"  ##AFR_NFE"  ##
 pi_start<-rep(1/k, k)  ##c(.5, .5) ##c(.9, .1)
-threshold=0.0000001
+threshold=0.0001
 
 #############  ExAC data  ###########
 exac<-read.table("ExAC/all.common_added_cols_v2.txt", sep="\t", header=T, as.is=T, fill=T)
