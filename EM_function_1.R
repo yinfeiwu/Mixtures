@@ -11,6 +11,7 @@ setwd("/home/projects/mixtures")
 
 #######  THIS DOES NOT WORK FOR AFRICAN AND EUROPEAN AND ALL SAMPLES -- i.e. EM2  #####
 
+person="Kendra"
 
 ########  sim parameters  ##########
 Ntot=10000  ##total number of simulated samples
@@ -93,7 +94,7 @@ while( thresh_check > threshold){
 
 pi_out2<-cbind(pi_out, pi_out_median, iter, N)
 
-write.table(pi_out2, paste("pops", pops, "AFR", N_AFR, "_NFE", (Ntot-N_AFR), "_start", paste(pi_start, collapse="_"), ".txt",sep=""), row.names=F, col.names=F, quote=F, sep="\t")
+write.table(pi_out2, paste(person, "/pops", pops, "AFR", N_AFR, "_NFE", (Ntot-N_AFR), "_start", paste(pi_start, collapse="_"), ".txt",sep=""), row.names=F, col.names=F, quote=F, sep="\t")
 
 
 
