@@ -63,18 +63,20 @@ while( thresh_check > threshold){
         })
     }
     
-    gamma_tmp.b1<-gamma_tmp.a[which(apply(exp(gamma_tmp.a), 1, max)>0.01),]
-    x<-x[which(apply(exp(gamma_tmp.a), 1, max)>0.01),]
-    p<-p[which(apply(exp(gamma_tmp.a), 1, max)>0.01),]
+    gamma_tmp<-(apply(gamma_tmp.a,1,function(x){sum(x, na.rm=T)})-gamma_tmp.a)/apply(gamma_tmp.a,1,function(x){sum(x, na.rm=T)})
+    
+    ##gamma_tmp.b1<-gamma_tmp.a[which(apply(exp(gamma_tmp.a), 1, max)>0.01),]
+    ##x<-x[which(apply(exp(gamma_tmp.a), 1, max)>0.01),]
+    ##p<-p[which(apply(exp(gamma_tmp.a), 1, max)>0.01),]
     
     ##gamma_tmp.b2<-ifelse(gamma_tmp.b1=="-Inf", min(gamma_tmp.b1), gamma_tmp.a)
-   gamma_tmp.b<-t(apply(gamma_tmp.b1, 1, function(x){x+abs(min(x, na.rm=T))*2}))
+   ##gamma_tmp.b<-t(apply(gamma_tmp.b1, 1, function(x){x+abs(min(x, na.rm=T))*2}))
 
    
-   gamma_tmp.c<-ifelse(is.na(gamma_tmp.b), 0, ifelse(gamma_tmp.b=="Inf", 1, gamma_tmp.b))
+   ##gamma_tmp.c<-ifelse(is.na(gamma_tmp.b), 0, ifelse(gamma_tmp.b=="Inf", 1, gamma_tmp.b))
    
    ##gamma_tmp<-(gamma_tmp.c)/apply(gamma_tmp.c,1,function(x){sum(x, na.rm=T)})
-   gamma_tmp<-(apply(gamma_tmp.c,1,function(x){sum(x, na.rm=T)})-gamma_tmp.c)/apply(gamma_tmp.c,1,function(x){sum(x, na.rm=T)})
+   ##gamma_tmp<-(apply(gamma_tmp.c,1,function(x){sum(x, na.rm=T)})-gamma_tmp.c)/apply(gamma_tmp.c,1,function(x){sum(x, na.rm=T)})
    
    
     pi_new<-apply(gamma_tmp,2,function(x){mean(x, na.rm=T)})
