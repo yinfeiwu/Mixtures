@@ -11,7 +11,7 @@ setwd("/home/projects/mixtures")
 
 #######  THIS DOES NOT WORK FOR AFRICAN AND EUROPEAN AND ALL SAMPLES -- i.e. EM2  #####
 
-person="Kendra"
+person="Kendra" ## make a directory with your name - make sure you use your name when running the code so you are not overwriting others work
 
 ########  sim parameters  ##########
 Ntot=10000  ##total number of simulated samples
