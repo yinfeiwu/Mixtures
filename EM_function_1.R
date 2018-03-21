@@ -42,10 +42,7 @@ x<-x.touse[x.touse$AF>MAF_thresh & x.touse$AF<(1-MAF_thresh),1:3]
 ###########  EM1 FUNCTION  #############
 N=nrow(x) # number of markers
 
-if(pops=="AFR_NFE"){p<-exac[which(x.touse$AF>MAF_thresh & x.touse$AF<(1-MAF_thresh)),paste(c("AC_hom_", "AC_het_", "AC_homref_"), rep(pop_names, each=3), sep="")]}
-if(pops=="ALL"){p<-exac[which(x.touse$AF>MAF_thresh & x.touse$AF<(1-MAF_thresh)),c("AC_hom_AFR", "AC_het_AFR", "AC_homref_AFR","AC_hom_AMR", "AC_het_AMR", "AC_homref_AMR","AC_hom_EAS", "AC_het_EAS", "AC_homref_EAS", "AC_hom_FIN", "AC_het_FIN", "AC_homref_FIN", "AC_hom_OTH", "AC_het_OTH", "AC_homref_OTH", "AC_hom_SAS", "AC_het_SAS", "AC_homref_SAS", "AC_hom_NFE", "AC_het_NFE", "AC_homref_NFE")]}
-
-##p<-apply(p.a, 2, function(x){ifelse(is.na(x),0,x)})  ##assuming missing in ExAC is AF=0
+p<-exac[which(x.touse$AF>MAF_thresh & x.touse$AF<(1-MAF_thresh)),paste(c("AC_hom_", "AC_het_", "AC_homref_"), rep(pop_names, each=3), sep="")]
 
 
 pi_out<-pi_out_median<-pi_new<-pi_start
