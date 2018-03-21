@@ -23,7 +23,6 @@ N_pop1=5000
 MAF_thresh=0.05
 pop_names<-c("AFR", "NFE") ##c("AFR","AMR", "EAS","FIN","OTH","SAS", "NFE") ##
 k=length(pop_names)
-pops<-ifelse(k==2, "AFR_NFE", "ALL") ##"ALL"  ##AFR_NFE"  ##
 pi_start<-rep(1/k, k)  ##c(.5, .5) ##c(.9, .1)
 threshold=0.0001
 
@@ -71,7 +70,7 @@ while( thresh_check > threshold){
     pi_out_median<-rbind(pi_out_median, pi_median)
     iter=iter+1
     thresh_check<-sum(abs(pi-pi_new))
-    if(round(iter/10)==(iter/10)){write.table(gamma_tmp, paste(person, "/gamma_values/pops", pops, pop_names[1], N_pop1, "_", pop_names[2], (N-N_pop1), "_start", paste(pi_start, collapse="_"), "_iter", iter, ".txt",sep=""), row.names=F, col.names=F, quote=F, sep="\t")}
+    if(round(iter/10)==(iter/10)){write.table(gamma_tmp, paste(person, "/gamma_values/pops", pop_names[1], N_pop1, "_", pop_names[2], (N-N_pop1), "_start", paste(pi_start, collapse="_"), "_iter", iter, ".txt",sep=""), row.names=F, col.names=F, quote=F, sep="\t")}
     print(pi)
     print(nrow(x))
 }
@@ -79,7 +78,7 @@ while( thresh_check > threshold){
 
 pi_out2<-cbind(pi_out, pi_out_median, iter, N)
 
-write.table(pi_out2, paste(person, "/pops", pops, "_", N_pop1, "_", (Ntot-N_pop1), "_start", paste(pi_start, collapse="_"), ".txt",sep=""), row.names=F, col.names=F, quote=F, sep="\t")
+write.table(pi_out2, paste(person, "/pops", pop_names[1] "_", N_pop1, "_", pop_names[2], (Ntot-N_pop1), "_start", paste(pi_start, collapse="_"), ".txt",sep=""), row.names=F, col.names=F, quote=F, sep="\t")
 
 
 
