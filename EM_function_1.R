@@ -1,15 +1,14 @@
 ####################################################################################
 ## code to estimate parameters of mixture distribution from frequency level data  ##
-## 9/1/2017														                  ##
+## EM1 - precisely estimating mixture proportions for known ancestral groups      ##
+## March 2018														              ##
 ####################################################################################
 
 ##qsub  -q all.q submit_R.sh
 
-########  THIS IS THE CODE THAT WORKS FOR AFRICAN AND EUROPEAN ONLY -- i.e. EM1 #########
-
 setwd("/home/projects/mixtures")
 
-#######  THIS DOES NOT WORK FOR AFRICAN AND EUROPEAN AND ALL SAMPLES -- i.e. EM2  #####
+#######  THIS DOES NOT WORK FOR unknown reference sampels -- i.e. EM2  #####
 
 person="Kendra" ## make a directory with your name - make sure you use your name when running the code so you are not overwriting others work
 
