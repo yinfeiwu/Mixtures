@@ -13,7 +13,11 @@ N=10000  ## simulated sample size
 	##pops<-c('AFR', 'EAS')
 	##pops<-c('AFR', 'FIN')
 	##pops<-c('AFR', 'SAS')
-	  pops<-c('AFR', 'OTH')
+	##pops<-c('AFR', 'OTH')
+	##pops<-c('NFE', 'AMR')
+	##pops<-c('NFE', 'EAS')
+	##pops<-c('NFE', 'FIN')
+
 
 ##initializing plot##
 
@@ -22,7 +26,10 @@ N=10000  ## simulated sample size
 	##png("AFR_EAS_only_100517_meanANDmedian.png", width=1500, height=500)
 	##png("AFR_FIN_only_100517_meanANDmedian.png", width=1500, height=500)
 	##png("AFR_SAS_only_100517_meanANDmedian.png", width=1500, height=500)
-	  png("AFR_OTH_only_100517_meanANDmedian.png", width=1500, height=500)
+	##png("AFR_OTH_only_100517_meanANDmedian.png", width=1500, height=500)
+	##png("NFE_AMR_only_100517_meanANDmedian.png", width=1500, height=500)
+	##png("NFE_EAS_only_100517_meanANDmedian.png", width=1500, height=500)
+	##png("NFE_FIN_only_100517_meanANDmedian.png", width=1500, height=500)
 
 
 
