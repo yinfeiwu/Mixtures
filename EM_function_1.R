@@ -78,7 +78,7 @@ while( thresh_check > threshold){
 
 pi_out2<-cbind(pi_out, pi_out_median, iter, N)
 
-write.table(pi_out2, paste(person, "/pops", pop_names[1] "_", N_pop1, "_", pop_names[2], (Ntot-N_pop1), "_start", paste(pi_start, collapse="_"), ".txt",sep=""), row.names=F, col.names=F, quote=F, sep="\t")
+write.table(pi_out2, paste(person, "/pops", pop_names[1], "_", N_pop1, "_", pop_names[2], (Ntot-N_pop1), "_start", paste(pi_start, collapse="_"), ".txt",sep=""), row.names=F, col.names=F, quote=F, sep="\t")
 
 
 
