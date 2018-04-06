@@ -21,7 +21,7 @@ N=10000  ## simulated sample size
 
 ##initializing plot##
 
-	##png("/home/projects/mixtures/AFR_NFE_only_100517_meanANDmedian.png", width=1500, height=500)
+	##png("AFR_NFE_only_100517_meanANDmedian.png", width=1500, height=500)
 	##png("AFR_AMR_only_100517_meanANDmedian.png", width=1500, height=500)
 	##png("AFR_EAS_only_100517_meanANDmedian.png", width=1500, height=500)
 	##png("AFR_FIN_only_100517_meanANDmedian.png", width=1500, height=500)
