@@ -25,9 +25,9 @@ for(int in int.list){
 for(sim in sim.list){
 temp<-read.table(paste0("pops", pops, "_", sim*N, "_", (N-sim*N), "_start", int, "_", (1-int), ".txt"), header=F, as.is=T)
 
-plot(0:(nrow(temp)-2),temp[-1,1], ylim=c(0,1), pch=20, cex=2, cex.axis=2, cex.lab=2, xlab="", ylab="")
+plot(0:(nrow(temp)-1),temp[,1], ylim=c(0,1), pch=20, cex=2, cex.axis=2, cex.lab=2, xlab="", ylab="")
 points(0,temp[1,1], cex=2, pch=8)
-lines(0:(nrow(temp)-2),temp[-1,1], lty=1, lwd=2)
+lines(0:(nrow(temp)-1),temp[,1], lty=1, lwd=2)
 abline(h=sim, lty=1, cex=2)
 
 points(0:(nrow(temp)-1),temp[,3], pch=18, cex=2, col="blue")
