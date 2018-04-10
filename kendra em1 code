@@ -28,6 +28,12 @@ MAF_thresh=0.05
 	##pop_names<-c("NFE", "AMR")
 	##pop_names<-c("NFE", "EAS")
 	##pop_names<-c("NFE", "FIN")
+	##pop_names<-c("NFE", "OTH")
+	##pop_names<-c("NFE", "SAS")
+	##pop_names<-c("AMR", "EAS")
+	##pop_names<-c("AMR", "FIN")
+	##pop_names<-c("AMR", "OTH")
+	##pop_names<-c("AMR", "SAS")
 
 k=length(pop_names)
 
