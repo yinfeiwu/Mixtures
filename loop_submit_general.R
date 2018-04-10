@@ -34,9 +34,9 @@ for(i in 1:nrow(pop_names_loop)){
   write(c(paste("Ntot = ", Ntot, sep=""), paste("N_pop1 = ", N_pop1, sep=""), paste("MAF_thresh = ", MAF_thresh, sep=""), paste("pop_names = c('", paste(t(pop_names_loop[i,]), collapse="', '"), "')", sep=""), paste("threshold = ", threshold, sep="")), file=paste(tmp, ".R", sep=""))
   write("source('/home/projects/mixtures/EM_function_1_forlooping.R')", file=paste(tmp, ".R", sep=""), append=T)
   
-  write(c("#$ -cwd",paste("#$ -o ", getwd(), tmp, ".log", sep=""),paste("#$ -o ",getwd(), tmp, ".err", sep=""),"#$ -S /bin/bash", "", paste("Rscript ", getwd(), tmp, ".R", sep="")),file=paste(tmp, ".sh", sep=""))
+  write(c("#$ -cwd",paste("#$ -o ", getwd(), '/', tmp, ".log", sep=""),paste("#$ -o ",getwd(), '/', tmp, ".err", sep=""),"#$ -S /bin/bash", "", paste("Rscript ", getwd(), '/', tmp, ".R", sep="")),file=paste(tmp, ".sh", sep=""))
   
-  tosubmit<-c(tosubmit, paste(getwd(), tmp, ".sh", sep=""))
+  tosubmit<-c(tosubmit, paste(getwd(), '/', tmp, ".sh", sep=""))
 }
 
 write(tosubmit, 'tosubmit.txt')
