@@ -6,15 +6,12 @@
 
 ##qsub  -q all.q submit_R.sh
 
-setwd("/home/projects/mixtures")
+#setwd("/home/projects/mixtures") ### We will specify the working directory elsewhere
 
 #######  THIS DOES NOT WORK FOR unknown reference sampels -- i.e. EM2  #####
 
-person="Kendra" ## make a directory with your name - make sure you use your name when running the code so you are not overwriting others work
-
-
 #############  ExAC data  ###########
-exac<-read.table("ExAC/all.common_added_cols_v2.txt", sep="\t", header=T, as.is=T, fill=T)
+exac<-read.table("/home/projects/mixtures/ExAC//all.common_added_cols_v2.txt", sep="\t", header=T, as.is=T, fill=T)
 
 
 ########  sim parameters  ##########
@@ -70,7 +67,7 @@ while( thresh_check > threshold){
     pi_out_median<-rbind(pi_out_median, pi_median)
     iter=iter+1
     thresh_check<-sum(abs(pi-pi_new))
-    if(round(iter/10)==(iter/10)){write.table(gamma_tmp, paste(person, "/gamma_values/pops", pop_names[1], N_pop1, "_", pop_names[2], (N-N_pop1), "_start", paste(pi_start, collapse="_"), "_iter", iter, ".txt",sep=""), row.names=F, col.names=F, quote=F, sep="\t")}
+    if(round(iter/10)==(iter/10)){write.table(gamma_tmp, paste("gamma_values_pops", pop_names[1], N_pop1, "_", pop_names[2], (N-N_pop1), "_start", paste(pi_start, collapse="_"), "_iter", iter, ".txt",sep=""), row.names=F, col.names=F, quote=F, sep="\t")}
     print(pi)
     print(nrow(x))
 }
@@ -78,7 +75,7 @@ while( thresh_check > threshold){
 
 pi_out2<-cbind(pi_out, pi_out_median, iter, N)
 
-write.table(pi_out2, paste(person, "/pops", pop_names[1], "_", N_pop1, "_", pop_names[2], (Ntot-N_pop1), "_start", paste(pi_start, collapse="_"), ".txt",sep=""), row.names=F, col.names=F, quote=F, sep="\t")
+write.table(pi_out2, paste("pops", pop_names[1], "_", N_pop1, "_", pop_names[2], (Ntot-N_pop1), "_start", paste(pi_start, collapse="_"), ".txt",sep=""), row.names=F, col.names=F, quote=F, sep="\t")
 
 
 
