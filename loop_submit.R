@@ -2,21 +2,15 @@
 ## loop submit command  ##
 ## Audrey Hendricks     ##
 ## April 3 2018         ##
+## Updated by Megan     ##
+## April 10 2018
 ##########################
 
-#### example of how to create many files  to submit at once. Try to submit just a few files the first time to make sure you are submitting the jobs correctly.  ####
-
-#### NOTE! the original R code parameters
-
-## create folder called "loop" to store your looped output ##
-## in your own folder ##
-mkdir("loop")
-
-
-
-
-###########  create R and sh scripts to submit  ############
-## run in R ##
+##########################
+##########################
+## Make sure you are in your loop directory!!!
+##########################
+##########################
 
 ########  sim parameters loop  ##########
 ## parameters that you want to loop over ##
@@ -34,24 +28,17 @@ threshold=0.0001
 
 tosubmit<-c()
 for(i in 1:nrow(pop_names_loop)){
-    ###FIX###
-   tmp<-paste("EM1_loop_Ntot", Ntot, "_Npop1", N_pop1, "_MAFthresh", MAF_thresh, "_popnames", paste(t(pop_names_loop[i,]), collapse=""), "_threshold", threshold, sep="")
-    
-    write(c(paste("Ntot = ", Ntot, sep=""), paste("N_pop1 = ", N_pop1, sep=""), paste("MAF_thresh = ", MAF_thresh, sep=""), paste("pop_names = c('", paste(t(pop_names_loop[i,]), collapse="', '"), "')", sep=""), paste("threshold = ", threshold, sep="")), file=paste("/home/projects/mixtures/loop/", tmp, ".R", sep=""))
-    write("source('/home/projects/mixtures/EM_function_1_forlooping.R')", file=paste("/home/projects/mixtures/loop/", tmp, ".R", sep=""), append=T)
-    
-    write(c("#$ -cwd",paste("#$ -o /home/projects/mixtures/loop/", tmp, ".log", sep=""),paste("#$ -o /home/projects/mixtures/loop/", tmp, ".err", sep=""),"#$ -S /bin/bash", "", paste("Rscript /home/projects/mixtures/loop/", tmp, ".R", sep="")),file=paste("/home/projects/mixtures/loop/", tmp, ".sh", sep=""))
-    
-    tosubmit<-c(tosubmit, paste("/home/projects/mixtures/loop/", tmp, ".sh", sep=""))
+  ###FIX###
+  tmp<-paste("EM1_loop_Ntot", Ntot, "_Npop1", N_pop1, "_MAFthresh", MAF_thresh, "_popnames", paste(t(pop_names_loop[i,]), collapse=""), "_threshold", threshold, sep="")
+  
+  write(c(paste0('setwd("',getwd(), '")'),paste("Ntot = ", Ntot, sep=""), paste("N_pop1 = ", N_pop1, sep=""), paste("MAF_thresh = ", MAF_thresh, sep=""), paste("pop_names = c('", paste(t(pop_names_loop[i,]), collapse="', '"), "')", sep=""), paste("threshold = ", threshold, sep="")), file=paste(tmp, ".R", sep=""))
+  write("source('/home/projects/mixtures/EM_function_1_forlooping.R')", file=paste(tmp, ".R", sep=""), append=T)
+  
+  write(c("#$ -cwd",paste("#$ -o ", getwd(), '/', tmp, ".log", sep=""),paste("#$ -o ",getwd(), '/', tmp, ".err", sep=""),"#$ -S /bin/bash", "", paste("Rscript ", getwd(), '/', tmp, ".R", sep="")),file=paste(tmp, ".sh", sep=""))
+  
+  tosubmit<-c(tosubmit, paste(getwd(), '/', tmp, ".sh", sep=""))
 }
 
-write(tosubmit, "/home/projects/mixtures/loop/tosubmit.txt")
+write(tosubmit, 'tosubmit.txt')
 
-########  loop to submit R scripts  #########
-## run in BASH  ##
-for i in $(cat tosubmit.txt)
-do
-qsub -q all.q  $i
-echo $i
-done
 
