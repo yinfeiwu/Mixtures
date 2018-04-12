@@ -1,0 +1,16 @@
+########  loop to submit R scripts  #########
+## run in BASH  ##
+## run from mathcentral ############
+
+##### You will need to specify the directory that your tosubmit file is in
+
+for i in $(cat /home/projects/mixtures/your_specific_directory/tosubmit.txt)
+do
+qsub -q all.q  $i
+echo $i
+done
+
+
+### you can type
+##    qstat -f 
+### to check the status/see where the job is running
