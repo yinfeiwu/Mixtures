@@ -17,9 +17,6 @@ person="Kendra" ## make a directory with your name - make sure you use your name
 exac<-read.table("ExAC/all.common_added_cols_v2.txt", sep="\t", header=T, as.is=T, fill=T)
 
 
-########  sim parameters  ##########
-k=length(pop_names)
-
 
 ############# simulating NFE and African mixture ##########
 x.obs.pop2<- as.data.frame(exac[,paste(c("AC_hom_", "AC_het_", "AC_homref_"), pop_names[2], sep="")])
