@@ -19,7 +19,6 @@ exac<-read.table("ExAC/all.common_added_cols_v2.txt", sep="\t", header=T, as.is=
 
 ########  sim parameters  ##########
 k=length(pop_names)
-pi_start<-rep(1/k, k)  ##c(.5, .5) ##c(.9, .1)
 
 
 ############# simulating NFE and African mixture ##########
