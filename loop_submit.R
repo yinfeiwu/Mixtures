@@ -23,19 +23,24 @@ mkdir("loop")
 ## always check your paste code ##
 
 pop_names_loop<-data.frame(pop1="AFR", pop2=c("AMR", "EAS","FIN","OTH","SAS", "NFE"))
-
+N_pop1_loop<-c(1000,5000,9000)
+pi_start_loop<-rbind(c(.5,.5), c(.9,.1), c(.1,.9))  ##
 
 ########  sim parameters  ##########
 Ntot=10000  ##total number of simulated samples
-N_pop1=5000
 MAF_thresh=0.05
 ##k=length(pop_names)
-pi_start<-c(.5, .5)  ##c(.5, .5) ##c(.9, .1) rep(1/k, k) 
+##pi_start<-c(.5, .5)  ##c(.5, .5) ##c(.9, .1) rep(1/k, k) 
 ##pop_names<-c("AFR", "NFE") ##c("AFR","AMR", "EAS","FIN","OTH","SAS", "NFE") ##
 threshold=0.0001
 
 tosubmit<-c()
+
+for(p in 1:nrow(pi_start_loop)){
+for(j in 1:length(N_pop1_loop)){
 for(i in 1:nrow(pop_names_loop)){
+    N_pop1<-N_pop1_loop[j]
+    pi_start<-pi_start_loop[p,]
     
    tmp<-paste("EM1_loop_Ntot", Ntot, "_Npop1", N_pop1, "_MAFthresh", MAF_thresh, "_pi_start", paste(t(pi_start), collapse=""), "_popnames", paste(t(pop_names_loop[i,]), collapse=""), "_threshold", threshold, sep="")
     
@@ -45,7 +50,9 @@ for(i in 1:nrow(pop_names_loop)){
     write(c("#$ -cwd",paste("#$ -o /home/projects/mixtures/loop/", tmp, ".log", sep=""),paste("#$ -o /home/projects/mixtures/loop/", tmp, ".err", sep=""),"#$ -S /bin/bash", "", paste("Rscript /home/projects/mixtures/loop/", tmp, ".R", sep="")),file=paste("/home/projects/mixtures/loop/", tmp, ".sh", sep=""))
     
     tosubmit<-c(tosubmit, paste("/home/projects/mixtures/loop/", tmp, ".sh", sep=""))
-}
+}##ending loop i
+    }##ending loop j
+     }##ending loop p
 
 write(tosubmit, "/home/projects/mixtures/loop/tosubmit.txt")
 
