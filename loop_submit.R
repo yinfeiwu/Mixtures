@@ -29,6 +29,7 @@ pop_names_loop<-data.frame(pop1="AFR", pop2=c("AMR", "EAS","FIN","OTH","SAS", "N
 Ntot=10000  ##total number of simulated samples
 N_pop1=5000
 MAF_thresh=0.05
+pi_start<-rep(1/k, k)  ##c(.5, .5) ##c(.9, .1)
 ##pop_names<-c("AFR", "NFE") ##c("AFR","AMR", "EAS","FIN","OTH","SAS", "NFE") ##
 threshold=0.0001
 
