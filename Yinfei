@@ -1,0 +1,123 @@
+> setwd("/home/projects/mixtures")
+>
+>
+>
+> person="yinfei"
+>
+> #############  ExAC data  ###########
+> exac<-read.table("ExAC/all.common_added_cols_v2.txt", sep="\t", header=T, as.is=T, fill=T)
+>
+>
+> ########  sim parameters  ##########
+> Ntot=10000  ##total number of simulated samples
+>
+> ##N_pop1=5000
+> ##N_pop1=1000
+> N_pop1=9000
+>
+> MAF_thresh=0.05
+>
+> ##pop_names<-c("AFR", "NFE")
+> ##pop_names<-c("AFR", "AMR")
+> ##pop_names<-c("AFR", "EAS")
+> ##pop_names<-c("AFR", "FIN")
+> ##pop_names<-c("AFR", "SAS")
+> ##pop_names<-c("AFR", "OTH")
+> ##pop_names<-c("NFE", "AMR")
+> ##pop_names<-c("NFE", "EAS")
+> pop_names<-c("NFE", "FIN")
+> ##pop_names<-c("NFE", "OTH")
+> ##pop_names<-c("NFE", "SAS")
+> ##pop_names<-c("AMR", "EAS")
+> ##pop_names<-c("AMR", "FIN")
+> ##pop_names<-c("AMR", "OTH")
+> ##pop_names<-c("AMR", "SAS")
+>
+> k=length(pop_names)
+>
+> ##pi_start<-rep(1/k, k)  ##c(.5, .5) ##c(.9, .1)
+> pi_start<-c(.9,.1)
+> ##pi_start<-c(.1,.9)
+>
+> threshold=0.0001
+>
+>
+> ############# simulating NFE and African mixture ##########
+> x.obs.pop2<- as.data.frame(exac[,paste(c("AC_hom_", "AC_het_", "AC_homref_"), pop_names[2], sep="")])
+> x.obs.pop1<- as.data.frame(exac[,paste(c("AC_hom_", "AC_het_", "AC_homref_"), pop_names[1], sep="")])
+> x.sim.pop2<-t(apply(x.obs.pop2, 1, function(x){rmultinom(1, (Ntot-N_pop1), prob=(x))}))
+> x.sim.pop1<-t(apply(x.obs.pop1, 1, function(x){rmultinom(1, N_pop1, prob=(x))}))
+>
+> x.touse.a<-x.sim.pop2+x.sim.pop1
+> x.touse<-as.data.frame(x.touse.a)
+> x.touse$AF<-(2*x.touse[,1]+x.touse[,2])/(2*Ntot)
+> x<-x.touse[x.touse$AF>MAF_thresh & x.touse$AF<(1-MAF_thresh),1:3]
+>
+> ###########  EM1 FUNCTION  #############
+> N=nrow(x) # number of markers
+>
+> p<-exac[which(x.touse$AF>MAF_thresh & x.touse$AF<(1-MAF_thresh)),paste(c("AC_hom_", "AC_het_", "AC_homref_"), rep(pop_names, each=3), sep="")]
+>
+>
+> pi_out<-pi_out_median<-pi_new<-pi_start
+> iter=0
+> thresh_check=threshold+1
+>
+> while( thresh_check > threshold){
++     pi=pi_new
++     gamma_tmp.a<-matrix(NA, nrow=nrow(x), ncol=k)
++     for(p_k in 1:k){
++         ##estimating the posterior probs from the data per k ancestry group per n markers
++         x.p<-cbind(x, p[,c(((p_k-1)*3+1):((p_k-1)*3+3))])
++         gamma_tmp.a[,p_k]<-apply(x.p,1, function(x.f){
++             p_k_geno<-as.numeric(x.f[4:6])
++             pi[p_k]*dmultinom(as.numeric(x.f[1:3]), prob = p_k_geno, log=T)
++         })
++     }
++
++     gamma_tmp<-(apply(gamma_tmp.a,1,function(x){sum(x, na.rm=T)})-gamma_tmp.a)/apply(gamma_tmp.a,1,function(x){sum(x, na.rm=T)})
++
++     pi_new<-apply(gamma_tmp,2,function(x){mean(x, na.rm=T)})
++     pi_median<-apply(gamma_tmp,2,function(x){median(x, na.rm=T)})
++     pi_90<-apply(gamma_tmp,2,function(x){quantile(x, probs=0.90,na.rm=T)})
++
++     pi_out<-rbind(pi_out, pi_new)
++     pi_out_median<-rbind(pi_out_median, pi_median)
++     iter=iter+1
++     thresh_check<-sum(abs(pi-pi_new))
++     if(round(iter/10)==(iter/10)){write.table(gamma_tmp, paste(person, "/gamma_values/pops", pop_names[1], N_pop1, "_", pop_names[2], (N-N_pop1),
++
++ "_start", paste(pi_start, collapse="_"), "_iter", iter, ".txt",sep=""), row.names=F, col.names=F, quote=F, sep="\t")}
++     print(pi)
++     print(nrow(x))
++ }
+[1] 0.9 0.1
+[1] 45007
+[1] 0.436198 0.563802
+[1] 45007
+[1] 0.8480535 0.1519465
+[1] 45007
+[1] 0.5288626 0.4711374
+[1] 45007
+[1] 0.8022703 0.1977297
+[1] 45007
+[1] 0.5899705 0.4100295
+[1] 45007
+[1] 0.7673084 0.2326916
+[1] 45007
+[1] 0.6286085 0.3713915
+[1] 45007
+[1] 0.7426303 0.2573697
+[1] 45007
+Error in file(file, ifelse(append, "a", "w")) :
+  cannot open the connection
+In addition: Warning message:
+In file(file, ifelse(append, "a", "w")) :
+  cannot open file 'yinfei/gamma_values/popsNFE9000_FIN36007_start0.9_0.1_iter10.txt': No such file or directory
+>
+>
+> pi_out2<-cbind(pi_out, pi_out_median, iter, N)
+>
+> write.table(pi_out2, paste(person, "/pops", pop_names[1], "_", N_pop1, "_", pop_names[2], (Ntot-N_pop1), "_start", paste(pi_start, collapse="_"),
++
++ ".txt",sep=""), row.names=F, col.names=F, quote=F, sep="\t")## create file
