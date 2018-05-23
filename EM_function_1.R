@@ -33,7 +33,7 @@ x<-x.touse[x.touse$AF>MAF_thresh & x.touse$AF<(1-MAF_thresh),1:3]
 N=nrow(x) # number of markers
 
 p<-exac[which(x.touse$AF>MAF_thresh & x.touse$AF<(1-MAF_thresh)),paste(c("AC_hom_", "AC_het_", "AC_homref_"), rep(pop_names, each=3), sep="")]
-
+k=length(pop_names)
 
 pi_out<-pi_out_median<-pi_new<-pi_start
 iter=0
