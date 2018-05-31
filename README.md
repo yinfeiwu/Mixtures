@@ -1,4 +1,4 @@
-# Mixtures
+# checking push # Mixtures
 
 EM_function_1.R -- contains code for the first EM algorithm to detect the mixture proportions given k groups
 
