@@ -1,0 +1,58 @@
+setwd(paste("/home/projects/mixtures/Kendra/loop", person, sep="/"))
+
+int.list<-c(0.8, 0.5, 0.2) ## initial proportion values
+
+sim.list<-c(0.8, 0.5, 0.2) ## simulated proportion values 
+
+pop1="FIN"
+pop2=c("OTH", "SAS")
+
+N=10000  
+
+bias_out<-c() 
+
+bias<-c() 
+
+for(int in int.list)    
+  
+	{
+  
+		for(sim in sim.list)    
+    
+			{
+
+				for(i in 1:length(pop2))
+
+					{
+
+
+						temp<-read.table(paste0("pops", pop1, "_", sim*N, '_', pop2[i], (N-sim*N), "_start", int, "_", (1-	
+
+					int), ".txt"), header=F, as.is=T)
+   		
+    
+    			
+						k<-temp[nrow(temp),1]
+						l<-temp[nrow(temp),3]
+
+						bias_k<-k-sim
+						bias_l<-l-sim
+
+			
+						both <- c(bias_k, bias_l, sim, int, pop1, pop2[i])
+						bias <- rbind(bias, both)
+			
+					}
+			}
+	}
+
+bias<-data.frame(bias)
+
+names(bias) <- c('mean_bias', 'median_bias', 'Truth', 'Start','Pop1', 'Pop2')
+
+bias_out<-rbind(bias_out,bias)
+
+write.table(bias_out, file=paste(sim.list[1],"_BIAS.txt", sep=""), sep = "\t", quote=F, row.names = FALSE)
+
+
+
