@@ -1,0 +1,49 @@
+
+## change directory
+cd /nfs/storage/math/gross-s2/projects/gnomad-public/
+
+python3.6
+
+##run below on python
+## read in file
+
+import hail as hl
+
+##read in table with imputed types
+data=hl.methods.read_table('ht/genomes/gnomad.genomes.r2.1.sites.ht')
+
+##show the first 5 rows of data
+data.show(5)
+
+
+##filter out milti-a & indels
+data1=data.filter(hl.len(data.alleles[0])==1, keep=True)
+data2=data1.filter(hl.len(data1.alleles[1])==1, keep=True)
+
+##show the first five rows
+data2.show(5)
+
+##filter our MAF 
+
+
+###get the frequency index dictionary -- this provides the column names to use to find the column locations
+data2.freq_index_dict.take(5)
+
+## filter the 2nd () of controls_afr_male
+data3=data2.filter(data2.freq[1].AF>0.01)
+
+
+##filter the 16th () of controls_afr -- will usually only use this, not male and female
+data4=data3.filter(data3.freq[15].AF>0.01)
+
+##filter the 88th () of controls_afr_female
+data5=data4.filter(data4.freq[87].AF>0.01)
+
+
+##write as hail table
+data5.write('filtered.maf01.controls_afr.ht')
+
+##check
+filtered=hl.methods.read_table('filtered.maf01.controls_afr')
+filtered.show(10)
+
