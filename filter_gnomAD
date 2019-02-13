@@ -25,13 +25,15 @@ data2.show(5)
 
 ##filter our MAF 
 
-###get the frequency index dictionary
+
+###get the frequency index dictionary -- this provides the column names to use to find the column locations
 data2.freq_index_dict.take(5)
 
 ## filter the 2nd () of controls_afr_male
 data3=data2.filter(data2.freq[1].AF>0.01)
 
-##filter the 16th () of controls_afr
+
+##filter the 16th () of controls_afr -- will usually only use this, not male and female
 data4=data3.filter(data3.freq[15].AF>0.01)
 
 ##filter the 88th () of controls_afr_female
