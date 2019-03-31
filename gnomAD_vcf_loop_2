@@ -1,0 +1,42 @@
+##############################
+##qsub gnomAD_vcf_loop.sh   ##
+##qstat                     ##
+##qdel                      ##
+##############################
+
+#$ -o /nfs/storage/math/gross-s2/projects/gnomad-public/vcf/genomes/filter.log
+#$ -e /nfs/storage/math/gross-s2/projects/gnomad-public/vcf/genomes/filter.err
+
+
+## looping through chromosomes
+
+#!/bin/bash
+ 
+for CHR in `seq 1 22` ; do
+     echo $CHR 
+
+## change directory
+cd /nfs/storage/math/gross-s2/projects/gnomad-public/vcf/genomes
+mkdir /nfs/storage/math/gross-s2/projects/gnomad-public/vcf/genomes/chr$CHR.filter
+
+##make a .gz file (.bgz cannot be used)
+bgzip -c gnomad.genomes.r2.1.sites.chr$CHR.vcf.bgz | gunzip > /nfs/storage/math/gross-s2/projects/gnomad-public/vcf/genomes/chr$CHR.filter/gnomad.genomes.r2.1.sites.chr$CHR.vcf.gz
+
+##change directory
+cd /nfs/storage/math/gross-s2/projects/gnomad-public/vcf/genomes/chr$CHR.filter
+
+##keep PASS & remove indels
+vcftools --gzvcf gnomad.genomes.r2.1.sites.chr$CHR.vcf.gz --remove-filtered-all --remove-indels --recode --recode-INFO-all --stdout | gzip -c > gnomad.genomes.r2.1.sites.chr$CHR.PASS_remove_indels.vcf.gz
+
+
+for POP in afr oth; do
+   echo $POP
+
+## filter MAF
+bcftools view  -i  "MIN(INFO/controls_AF_"$POP")>0.01 & MAX(INFO/controls_AF_"$POP")<0.99" gnomad.genomes.r2.1.sites.chr$CHR._noindels.vcf.gz | gzip -c > gnomad.genomes.r2.1.sites.chr$CHR._filtered_$POP.vcf.gz
+
+
+done
+done
+
+
