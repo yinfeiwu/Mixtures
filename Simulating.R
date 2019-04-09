@@ -22,16 +22,16 @@ source_python("/nfs/storage/math/gross-s2/projects/mixtures/team_members/current
 
 START <- Sys.time()
 teamMember <- "Greg"              # Put your name here. Please make sure it matches the name of your folder in math-compute.
-interval1 <- 0.01                 # Change this to the interval you are working on
-interval2 <- 0.05                 # 
+interval1 <- 0.015                # Change this to the interval you are working on
+interval2 <- 0.025                # 
 
-numberSims <- 10                        # Start with 10. then try 100 or 1000.
+numberSims <- 3                        # Start with 3. then try 10. Then 1000!
 k <- 5                                 # Keep at 5. This number is input for simulating the sampling population.
 numAnc <- 2                            # Set by the user. This number is only for recording in the spreadsheet.
 ancestry1 <- "afr_MAF"                 # Name the ancestries you are working with
-ancestry2 <- "NA"                 #
+ancestry2 <- "nam_MAF"                 #
 
-guess1 <- 1/k                          # Generally leave this along for now.           
+guess1 <- 1/k                          # Generally leave this alone for now.           
 
 output <- c()                          # Initialize an empty output matrix.
 
@@ -43,10 +43,10 @@ for (i in 1:numberSims){
     
     set.seed(seed)
     afrfrac <- runif(1, interval1, interval2) # Uniform random from user chosen interval.
-    easfrac <- 1 - afrfrac
+    easfrac <- 0    
     sasfrac <- 0
     eurfrac <- 0
-    namfrac <- 0
+    namfrac <- 1 - afrfrac
     
     
     set.seed(seed)
@@ -63,11 +63,11 @@ for (i in 1:numberSims){
     guess <- rbind(guess1, guess1, guess1, guess1, guess1)             # kx1 vector of starting guesses.
     HA_ <- print(HA(A, af, guess))                                     # Returns pi-values, iterations, time.
     
-    output <- rbind(output, c(HA_[1], HA_[2], HA_[3], HA_[4], HA_[5], HA_[6], HA_[7], Python_[1], Python_[2], Python_[3], Python_[4], Python_[5], Python_[6], Python_[7], seed, teamMember, afrfrac, easfrac, sasfrac, eurfrac, namfrac, eurfrac - as.numeric(HA_[1]), afrfrac - as.numeric(HA_[2]), easfrac - as.numeric(HA_[3]), sasfrac - as.numeric(HA_[4]), namfrac - as.numeric(HA_[5]), eurfrac - as.numeric(Python_[1]), afrfrac - as.numeric(Python_[2]), easfrac - as.numeric(Python_[3]), sasfrac - as.numeric(Python_[4]), namfrac - as.numeric(Python_[5])))
+    output <- rbind(output, c(HA_[1], HA_[2], HA_[3], HA_[4], HA_[5], HA_[6], HA_[7], Python_[1], Python_[2], Python_[3], Python_[4], Python_[5], Python_[6], Python_[7], seed, teamMember, afrfrac, easfrac, sasfrac, eurfrac, namfrac, eurfrac - as.numeric(HA_[1]), afrfrac - as.numeric(HA_[2]), easfrac - as.numeric(HA_[3]), sasfrac - as.numeric(HA_[4]), namfrac - as.numeric(HA_[5]), eurfrac - as.numeric(Python_[1]), afrfrac - as.numeric(Python_[2]), easfrac - as.numeric(Python_[3]), sasfrac - as.numeric(Python_[4]), namfrac - as.numeric(Python_[5]), interval1, interval2))
     print(i)
     print(Sys.time() - START)
 }
-colnames(output) <- c("R.afr", "R.eas", "R.sas","R.eur", "R.nam",  "R.iters", "R.time", "Python.afr", "Python.eas", "Python.sas", "Python.eur", "Python.nam", "Python.iters", "Python.time", "seed", "Team.memeber", "True.afr", "True.eas", "True.sas", "True.eur", "True.nam", "accuracy.HA.afr", "accuracy.HA.eas", "accuracy.HA.sas", "accuracy.HA.eur", "accuracy.HA.nam", "accuracy.Python.afr", "accuracy.Python.eas", "accuracy.Python.sas", "accuracy.Python.eur", "accuracy.Python.nam")
+colnames(output) <- c("R.afr", "R.eas", "R.sas","R.eur", "R.nam",  "R.iters", "R.time", "Python.afr", "Python.eas", "Python.sas", "Python.eur", "Python.nam", "Python.iters", "Python.time", "seed", "Team.memeber", "True.afr", "True.eas", "True.sas", "True.eur", "True.nam", "accuracy.HA.afr", "accuracy.HA.eas", "accuracy.HA.sas", "accuracy.HA.eur", "accuracy.HA.nam", "accuracy.Python.afr", "accuracy.Python.eas", "accuracy.Python.sas", "accuracy.Python.eur", "accuracy.Python.nam", "interval.1", "interval.2")
 
 write.csv(output, file = paste0("/nfs/storage/math/gross-s2/projects/mixtures/team_members/current_team/", teamMember, "/", ancestry1, "_", interval1, "-", interval2, "_", ancestry2,  ".csv"))
 
