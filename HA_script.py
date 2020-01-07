@@ -6,15 +6,18 @@ from scipy.optimize import minimize
 import timeit
 
 
-### data_processer: (D, k) -> (A, taf)
+### data_processer: (D, k, obs) -> (A, taf)
 
 
-### A data-processing function that takes 2 inputs: 
+### A data-processing function that takes 3 inputs: 
 
  ## 1. A user-input genetic data array D -- needs to be processed via pandas on the python side!!! 
  ## Note that D should be of size Nx(k+1+?) where we know there are N=number of SNPs rows and at least k columns, with at least one more for the total allele frequencies, and potentially ? other reference info (like SNP location, chromosome number, etc...)
 
- ## 2. and the number of ancestries, k=2,3,4,..., and outputs a matrix A of size Nxk containing N SNPs (these are the rows), and k ancestries (these are the columns), which are contained in D and a_t, the total allele frequencies, size Nx1
+ ## 2. the number of ancestries, k=2,3,4,..., 
+
+ ## 3. obs = 1, 2, 3, etc is which column to pull the observed/taf from *after* the MAFs
+ ## So for example, if the taf is stored in the first column after the MAFs, then obs=1. This is the default for HA (below).
 
 ### and returns 2 outputs:
 
@@ -22,7 +25,7 @@ import timeit
 
  ## 2. The total allele frequency called "taf" which should be an Nx1 vector
 
-def data_processor(D,k):
+def data_processor(D,k,obs):
     N = np.shape(D)[0] # N=number of SNPs!
     A = np.zeros((N,k))
     taf = np.zeros((N,1))
@@ -33,23 +36,26 @@ def data_processor(D,k):
     for i in range(2,2+k):
         A[:,i-2] = D[names[i]]
 
-    taf[:,0] = D[names[2+k]]
+    taf[:,0] = D[names[k+1+obs]] # + 1 because python starts indexing at 0.
 
     return A, taf
 
 
 
 
-### HA : (D, x_guess, k) -> (x_answer, n_iterations, time)
+### HA : (D, k, x_guess, obs=1) -> (x_answer, n_iterations, time)
 
 
-### A generalized function that takes 3 inputs: 
+### A generalized function that takes 4 inputs: 
  
  ## 1. The genetic data frame D (usually a CSV read in through pandas)
  
- ## 2. A starting guess "x_guess" which should be a kx1 vector
+ ## 2. A starting guess "x_guess" which should be a kx1 vector. Default is 1/k*(1,1,...,1).
 
  ## 3. The number of ancestries in the input data, k
+
+ ## 4. obs = 1, 2, 3, etc is which column to pull the observed/taf from *after* the MAFs
+ ## So for example, if the taf is stored in the first column after the MAFs, then obs=1. This is the default for HA (below).
     
 ### and returns 3 outputs:
 
@@ -60,10 +66,39 @@ def data_processor(D,k):
  ## 3. The run time of the algoirthm as a scalar value, measured in seconds
 
 
-def HA(D, x_guess, k):
+def HA(D=None, k=None, x_guess=None, obs=1):
+
+    if D is None:
+        print('Please specify Nxk data matrix D.')
+        return
+
+    if abs(np.shape(np.shape(D))[0]-2)>0:
+        print('Please ensure that data matrix D is size Nxk.')
+        return
+   
+    if k is None:
+        print('Please specify k, the number of ancestries.')
+        return
+
+    if isinstance(k,int)==False:
+        print('Please ensure that k is an integer.')
+        return
+    elif k <=0:
+        print('Please ensure that k is a positive integer.')
+        return
+
+    if x_guess is None:
+        x_guess=np.transpose(1/k*np.ones((k,1)))
+
+    if abs(np.shape(x_guess)[0]-1)>0 and abs(np.shape(x_guess)[1]-1)>0:
+        print('Please ensure that initial iterate x_guess is a vector, size kx1 or 1xk.')
+        return
+
+    if abs(np.shape(x_guess)[1]-k)>0:
+        x_guess=np.transpose(np.copy(x_guess))
 
     # Use the data_processor to take the info we need out of the data frame D
-    data_array=data_processor(D,k)
+    data_array=data_processor(D,k,obs)
     A = data_array[0]
     taf = data_array[1]
 
