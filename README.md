@@ -1,4 +1,4 @@
-# Mixtures
+#AUDREY  # Mixtures
 
 EM_function_1.R -- contains code for the first EM algorithm to detect the mixture proportions given k groups
 
@@ -9,3 +9,5 @@ plots_mixtures_EM1.R -- contains code to plot output from EM_funtion_1.R -- note
 loop_submit.R -- contains an example script for submitting a batch of jobs via loops in R and BASH
 
 Basic_submit.R -- contains an example script for submitting one job to the Linux cluster
+
+snpsampgenR.R -- contains an R script to generate a simulated population using the correct MAF proportions -- note: need to set location of data, need to set parameters (otherwise randomized parameters), need to set location to write generated file
